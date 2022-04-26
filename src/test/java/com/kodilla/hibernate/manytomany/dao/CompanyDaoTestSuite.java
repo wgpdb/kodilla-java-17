@@ -2,6 +2,7 @@ package com.kodilla.hibernate.manytomany.dao;
 
 import com.kodilla.hibernate.manytomany.Company;
 import com.kodilla.hibernate.manytomany.Employee;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,15 +55,6 @@ public class CompanyDaoTestSuite {
         assertNotEquals(0, softwareMachineId);
         assertNotEquals(0, dataMastersId);
         assertNotEquals(0, greyMatterId);
-
-        //Cleanup
-        try {
-            companyDao.deleteById(softwareMachineId);
-            companyDao.deleteById(dataMastersId);
-            companyDao.deleteById(greyMatterId);
-        } catch (Exception e) {
-            //do nothing
-        }
     }
 
     @Test
@@ -73,11 +65,8 @@ public class CompanyDaoTestSuite {
         Employee lindaKovalsky = new Employee("Linda", "Kovalsky");
 
         employeeDao.save(johnSmith);
-        int johnSmithId = johnSmith.getId();
         employeeDao.save(stephanieClarkson);
-        int stephanieClarksonId = stephanieClarkson.getId();
         employeeDao.save(lindaKovalsky);
-        int lindaKovalskyId = lindaKovalsky.getId();
 
         //When
         List<Employee> employeeByLastnameQuery = employeeDao.retrieveEmployeeByLastName("Smith");
@@ -86,11 +75,6 @@ public class CompanyDaoTestSuite {
         //Then
         assertEquals(1, employeeByLastnameQuery.size());
         assertEquals(0, notEmployedByLastnameQuery.size());
-
-        //Cleanup
-        employeeDao.deleteById(johnSmithId);
-        employeeDao.deleteById(stephanieClarksonId);
-        employeeDao.deleteById(lindaKovalskyId);
     }
 
     @Test
@@ -101,11 +85,8 @@ public class CompanyDaoTestSuite {
         Company greyMatter = new Company("Grey Matter");
 
         companyDao.save(softwareMachine);
-        int softwareMachineId = softwareMachine.getId();
         companyDao.save(dataMasters);
-        int dataMastersId = dataMasters.getId();
         companyDao.save(greyMatter);
-        int greyMatterId = greyMatter.getId();
 
         //When
         List<Company> companyFirstThreeLettersQuery = companyDao.retrieveCompanyNameByFragment("Sof");
@@ -114,10 +95,10 @@ public class CompanyDaoTestSuite {
         //Then
         assertEquals(1, companyFirstThreeLettersQuery.size());
         assertEquals(0, nonexistentCompanyFirstThreeLettersQuery.size());
+    }
 
-        //Cleanup
-        companyDao.deleteById(softwareMachineId);
-        companyDao.deleteById(dataMastersId);
-        companyDao.deleteById(greyMatterId);
+    @AfterEach
+    void cleanup() {
+        companyDao.deleteAll();
     }
 }
