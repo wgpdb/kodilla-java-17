@@ -22,7 +22,6 @@ public class TaskListDaoTestSuite {
     private static final String LISTNAME = "Test: Pending";
     private static final String TODO = "Test: To do";
     private static final String DESCRIPTION = "Test: Pending tasks";
-    private int cleanupId;
 
     @Test
     void testTaskListDaoService() {
@@ -36,7 +35,6 @@ public class TaskListDaoTestSuite {
         int id = taskList.getId();
         Optional<TaskList> readTaskList = taskListDao.findById(id);
         assertTrue(readTaskList.isPresent());
-        cleanupId = id;
     }
 
     @Test
@@ -51,7 +49,6 @@ public class TaskListDaoTestSuite {
 
         //Then
         assertEquals(1, readTaskLists.size());
-        cleanupId = readTaskLists.get(0).getId();
     }
 
     @Test
@@ -80,11 +77,10 @@ public class TaskListDaoTestSuite {
 
         //Then
         assertNotEquals(0, id);
-        cleanupId = id;
     }
 
     @AfterEach
     void cleanup() {
-        taskListDao.deleteById(cleanupId);
+        taskListDao.deleteAll();
     }
 }
