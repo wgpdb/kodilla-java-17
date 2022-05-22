@@ -89,8 +89,8 @@ public class CompanyDaoTestSuite {
         companyDao.save(greyMatter);
 
         //When
-        List<Company> companyFirstThreeLettersQuery = companyDao.retrieveCompanyNameByFragment("Sof");
-        List<Company> nonexistentCompanyFirstThreeLettersQuery = companyDao.retrieveCompanyNameByFragment("Xyz");
+        List<Company> companyFirstThreeLettersQuery = companyDao.retrieveCompanyNameByFistThreeLetters("Sof");
+        List<Company> nonexistentCompanyFirstThreeLettersQuery = companyDao.retrieveCompanyNameByFistThreeLetters("Xyz");
 
         //Then
         assertEquals(1, companyFirstThreeLettersQuery.size());
@@ -100,5 +100,6 @@ public class CompanyDaoTestSuite {
     @AfterEach
     void cleanup() {
         companyDao.deleteAll();
+        employeeDao.deleteAll();
     }
 }
